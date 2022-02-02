@@ -10,6 +10,8 @@
  * located at the root directory of this project.
  */
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const jwt = require("jsonwebtoken");
+const base64 = require("base64url");
 
 const publicKey = process.env.REACT_APP_MUX_ACCESS_TOKEN_ID;
 const secretKey = process.env.REACT_APP_MUX_SECRET_KEY;
@@ -26,6 +28,36 @@ module.exports = function (app) {
         "Authorization": `Basic ${auth}`,
         "Content-Type": "application/json",
       }
+    })
+  );
+
+  app.use(
+    '/stats/**',
+    createProxyMiddleware({
+      target: 'https://stats.mux.com/counts',
+      pathRewrite: (path, req) => {
+        // generate jwt
+        const privateKey = base64.decode(
+          process.env.REACT_APP_MUX_DATA_SIGNING_KEY_SECRET
+        );
+
+        const keyId = process.env.REACT_APP_MUX_DATA_SIGNING_KEY_ID;
+        const livestreamId = req.query.livestreamId;
+
+        const token = jwt.sign(
+          {
+            sub: livestreamId,
+            aud: "live_stream_id",
+            exp: Date.now() + 600, // UNIX Epoch seconds when the token expires
+            kid: keyId,
+          },
+          privateKey,
+          { algorithm: "RS256" }
+        );
+
+        return path.replace('/stats', `?token=${token}`)
+      },
+      changeOrigin: true
     })
   );
 };

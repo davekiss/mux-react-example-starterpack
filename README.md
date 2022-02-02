@@ -4,7 +4,7 @@ https://dashboard.mux.com/settings/signing-keys
 
 # 2. Generate a JWT
 
-`yarn add base64url jsonwebtoken`
+`npm install base64url jsonwebtoken`
 
 ```javascript
 const jwt = require("jsonwebtoken");
