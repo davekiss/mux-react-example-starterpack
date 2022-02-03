@@ -1,7 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 
+import { useEffect } from "react";
+
 function App() {
+  useEffect(() => {
+    fetch('/stats?livestreamId=abc').then(resp => resp.json()).then(payload => {
+      console.log(payload);
+    })
+  }, []);
   return (
     <div className="App">
       <header className="App-header">

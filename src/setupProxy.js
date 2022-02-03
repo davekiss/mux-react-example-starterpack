@@ -32,10 +32,11 @@ module.exports = function (app) {
   );
 
   app.use(
-    '/stats/**',
+    '/stats',
     createProxyMiddleware({
       target: 'https://stats.mux.com/counts',
       pathRewrite: (path, req) => {
+        console.log(req.query);
         // generate jwt
         const privateKey = base64.decode(
           process.env.REACT_APP_MUX_DATA_SIGNING_KEY_SECRET
