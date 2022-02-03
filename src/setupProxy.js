@@ -37,18 +37,19 @@ module.exports = function (app) {
       target: 'https://stats.mux.com/counts',
       pathRewrite: (path, req) => {
         console.log(req.query);
+
         // generate jwt
         const privateKey = base64.decode(
           process.env.REACT_APP_MUX_DATA_SIGNING_KEY_SECRET
         );
 
         const keyId = process.env.REACT_APP_MUX_DATA_SIGNING_KEY_ID;
-        const livestreamId = req.query.livestreamId;
+        const assetId = req.query.assetId;
 
         const token = jwt.sign(
           {
-            sub: livestreamId,
-            aud: "live_stream_id",
+            sub: assetId,
+            aud: "asset_id",
             exp: Date.now() + 600, // UNIX Epoch seconds when the token expires
             kid: keyId,
           },
@@ -56,7 +57,7 @@ module.exports = function (app) {
           { algorithm: "RS256" }
         );
 
-        return path.replace('/stats', `?token=${token}`)
+        return `?token=${token}`;
       },
       changeOrigin: true
     })

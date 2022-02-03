@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 function App() {
   useEffect(() => {
-    fetch('/stats?livestreamId=abc').then(resp => resp.json()).then(payload => {
+    fetch('/stats?assetId=CJJ8nFi8eWRc6x00OWWmxD028596ufz01pTV4snVzgqr4g').then(resp => resp.json()).then(payload => {
       console.log(payload);
     })
   }, []);
