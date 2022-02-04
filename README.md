@@ -33,3 +33,5 @@ console.log(token);
 # 3. Test it out
 
 `curl 'https://stats.mux.com/counts?token={JWT}'`
+
+You can get you Mux Data environment key here: https://dashboard.mux.com/environments
