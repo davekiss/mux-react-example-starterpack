@@ -17,10 +17,10 @@ const auth = btoa(`${publicKey}:${secretKey}`);
 
 module.exports = function (app) {
   app.use(
-    '/my-api/**',
+    '/ccv',
     createProxyMiddleware({
       target: 'https://api.mux.com',
-      pathRewrite: (path, req) => path.replace('/my-api', ''),
+      pathRewrite: (path, req) => path.replace('/ccv', '/data/v1/realtime/metrics/current-concurrent-viewers/timeseries'),
       changeOrigin: true,
       headers: {
         "Authorization": `Basic ${auth}`,

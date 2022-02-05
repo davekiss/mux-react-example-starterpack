@@ -10,7 +10,7 @@ function App() {
   const [historicalViewers, setHistoricalViewers] = useState();
 
   const getViewers = useCallback(async () => {
-    const response = await fetch(`/my-api/data/v1/realtime/metrics/current-concurrent-viewers/timeseries`)
+    const response = await fetch(`/ccv`)
     const payload = await response.json();
 
     const rows = payload.data;
@@ -62,11 +62,6 @@ function App() {
 
       <MuxVideo
         playbackId="yVvUsu1ON3vuBRzfTBucWQzT96702ey02x5s1HR9nmcyA"
-        metadata={{
-          video_id: "video-id-123456",
-          video_title: "Super Interesting Video",
-          viewer_user_id: "user-id-bc-789",
-        }}
         envKey="huqs2grm9q4lq9bifqeou30g4"
         streamType="on-demand"
         controls
