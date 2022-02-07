@@ -13,7 +13,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const publicKey = process.env.REACT_APP_MUX_ACCESS_TOKEN_ID;
 const secretKey = process.env.REACT_APP_MUX_SECRET_KEY;
-const auth = btoa(`${publicKey}:${secretKey}`);
+const auth = Buffer.from(`${publicKey}:${secretKey}`).toString('base64');
 
 module.exports = function (app) {
   app.use(
