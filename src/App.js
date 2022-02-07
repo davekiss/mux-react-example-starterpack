@@ -11,29 +11,20 @@ function App() {
 
   const getViewers = useCallback(async () => {
     const response = await fetch(`/ccv`)
-    const payload = await response.json();
+    const { data: rows } = await response.json();
 
-    const rows = payload.data;
     const currentValue = rows[rows.length - 1].value;
 
-    let historicalValues = {};
+    const historicalValues = [...Array(30).keys()].map(i => {
+      const valuesAtInterval = rows.filter(row => {
+        const date = startOfMinute(new Date(row.date));
+        const delta = differenceInMinutes(date, startOfMinute(new Date()));
+        return Math.abs(delta) === i;
+      })
+      .sort((a, b) => b.concurrent_viewers - a.concurrent_viewers);
 
-    rows.forEach(row => {
-      const date = startOfMinute(new Date(row.date));
-      const delta = differenceInMinutes(date, startOfMinute(new Date()));
-
-      const label = `${delta}m`;
-      // set if it doesn't exist, or, if it is less than the incoming value
-      if (!historicalValues[label] || historicalValues[label] < row.value) {
-        historicalValues[label] = row.value;
-      }
-    });
-
-    // massage into a shape compatible with react-charts
-    historicalValues = Object.keys(historicalValues).map(key => ({
-      label: key,
-      value: historicalValues[key]
-    }))
+      return { label: `-${i}m`, value: valuesAtInterval[0]?.concurrent_viewers || 0 };
+    }).reverse()
 
     return { currentValue, historicalValues }
   }, []);
@@ -42,7 +33,6 @@ function App() {
     const { currentValue, historicalValues } = await getViewers();
     setCurrentViewers(currentValue);
     setHistoricalViewers(historicalValues);
-    console.dir(historicalValues);
   }, [getViewers]);
 
   useEffect(() => {
