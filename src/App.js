@@ -49,14 +49,12 @@ function App() {
 
   return (
     <div>
-      {currentViewers && historicalViewers && (
-        <div className="p-10 shadow m-10 rounded w-min bg-blue-600 text-white">
-          <h1 className="text-sm">Active viewers right now</h1>
-          <span className="text-5xl mb-10 block">{currentViewers}</span>
+      <div className="p-10 shadow m-10 rounded w-min bg-blue-600 text-white">
+        <h1 className="text-sm">Active viewers right now</h1>
+        <span className="text-5xl mb-10 block">{currentViewers}</span>
 
-          <Bar historicalViewers={historicalViewers} />
-        </div>
-      )}
+        {historicalViewers && <Bar historicalViewers={historicalViewers} />}
+      </div>
 
       <MuxVideo
         playbackId="yVvUsu1ON3vuBRzfTBucWQzT96702ey02x5s1HR9nmcyA"
