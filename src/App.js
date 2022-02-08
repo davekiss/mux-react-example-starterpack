@@ -13,7 +13,7 @@ function App() {
     const response = await fetch(`/ccv`);
     const { data: rows } = await response.json();
 
-    const currentValue = rows[rows.length - 1].value;
+    const currentValue = new Intl.NumberFormat().format(rows[rows.length - 1].value);
 
     const historicalValues = [...Array(30).keys()]
       .map((i) => {
