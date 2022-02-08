@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import Bar from "./Bar";
 import MuxVideo from "@mux-elements/mux-video-react";
 
-import { differenceInMinutes, startOfMinute } from "date-fns";
+import { differenceInSeconds } from "date-fns";
 
 function App() {
   const [currentViewers, setCurrentViewers] = useState();
@@ -14,14 +14,14 @@ function App() {
     const { data: rows } = await response.json();
 
     const currentValue = new Intl.NumberFormat().format(rows[rows.length - 1].value);
+    const now = new Date();
 
     const historicalValues = [...Array(30).keys()]
       .map((i) => {
         const valuesAtInterval = rows
           .filter((row) => {
-            const date = startOfMinute(new Date(row.date));
-            const delta = differenceInMinutes(date, startOfMinute(new Date()));
-            return Math.abs(delta) === i;
+            const delta = differenceInSeconds(now, new Date(row.date));
+            return delta >= i * 60 && delta <= (i + 1) * 60;
           })
           .sort((a, b) => b.concurrent_viewers - a.concurrent_viewers);
 
