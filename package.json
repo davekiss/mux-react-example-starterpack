@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@liveblocks/client": "^0.16.17",
+    "@liveblocks/react": "^0.16.17",
     "@mux-elements/mux-video-react": "^0.2.0",
+    "@mux/spaces": "https://spaces-js.mux.dev/mux-spaces-sdk-js-latest.tgz",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
